@@ -1,72 +1,113 @@
+from math import nan
 import numpy as np
 import matplotlib.pyplot as plt
 
-data = np.genfromtxt('INFI\data\london_weather.csv', delimiter=",", skip_header=1)
+d = np.genfromtxt('INFI\data\london_weather.csv', delimiter=",", skip_header=1 )
 
-dates = data[:, 0]
-years = np.floor(dates / 10000).astype(int)
+dt =  d[:,0] #Datum mit folgendem Aufbau: 19790103 (3.Jänner 1979)
+# Aufteilen in Tag, Monat, Jahr
+day = (dt % 100).astype('i')
+month = (dt % 10000 / 100).astype('i')
+year = (dt % 100000000 / 10000).astype('i')
 
-average_temperature = np.mean(data[:, 2])
-print("Average Temperature:", average_temperature)
+# Check ob es funktioniert hat
+print("Jahr:", np.unique(year, return_counts=True))
+print("Monat", np.unique(month, return_counts=True))
+print("Tag:", np.unique(day, return_counts=True))
+print("Jahr MIN MAX" , np.min(year), np.max(year))
 
-# Task 2: Temperatur Unterschied darstellen
+sun = d[:,2] # Sonnenstunden
 
-selected_years = [1979, 1989, 1999, 2009]
-selected_data = [data[years == year][:, 2] for year in selected_years]
+max_temp = d[:,4]
 
-plt.figure()
-plt.boxplot(selected_data)
-plt.xticks(range(1, len(selected_years) + 1), selected_years)
-plt.title("Temperature Differences Over the Years")
-plt.xlabel("Year")
-plt.ylabel("Temperature (°C)")
+mean_temp = d[:,5] 
+
+min_temp=d[:,6]
+
+radiation = d[:,3]
+
+mean_temp_1979 = mean_temp[year == 1979]
+
+mean_temp_1989 = mean_temp[year == 1989]
+
+mean_temp_1999 = mean_temp[year == 1999]
+
+mean_temp_2009 = mean_temp[year == 2009]
+
+mean_temp_2020 = mean_temp[year == 2020]
+
+mean_temp_2009_fil = mean_temp_2009[~np.isnan(mean_temp_2009)]
+
+mean_temp_2020_fil = mean_temp_2020[~np.isnan(mean_temp_2020)]
+
+
+
+# Darstellung der Temperaturunterschiede mittels Boxplot
+plt.boxplot([mean_temp_1979, mean_temp_1989, mean_temp_1999, mean_temp_2009_fil, mean_temp_2020_fil])
+plt.xlabel("Jahr")
+plt.xticks([1,2,3,4,5], ["1979", "1989", "1999", "2009", "2020"])
+plt.ylabel("Temperatur")
+plt.savefig("1_1.png")
 plt.show()
 
-# Task 3: Zeitlicher Verlauf 
-
-specific_year = 2000
-yearly_data = data[years == specific_year]
-days = np.arange(1, len(yearly_data) + 1)
-temperature = yearly_data[:, 2]
-
-plt.figure()
-plt.plot(days, temperature, marker='o', linestyle='-')
-plt.title(f"Temperature Curve for {specific_year}")
-plt.xlabel("Day of the Year")
-plt.ylabel("Temperature (°C)")
+#1.2 Zeitlicher Verlauf
+plt.plot(mean_temp_2020_fil, "r.")
+plt.xlabel("Tag")
+plt.ylabel("Temperatur")
+plt.savefig("1_2.png")
 plt.show()
 
-# Task 4: Wetterextremen
-specific_year = 2000
-yearly_data = data[years == specific_year]
-temperature_data = yearly_data[:, 2] 
+# 1.3 Herausfinden von Wetterextremen
+quant_1979 = np.quantile(mean_temp_1979, 0.5)
 
+quant_1989 = np.quantile(mean_temp_1989, 0.5)
 
-q1 = np.percentile(temperature_data, 25)
-q3 = np.percentile(temperature_data, 75)
-iqr = q3 - q1
+quant_1999 = np.quantile(mean_temp_1999, 0.5)
 
+quant_2009 = np.quantile(mean_temp_2009_fil, 0.5)
 
-outlier_threshold = 1.5 * iqr
+quant_2020 = np.quantile(mean_temp_2020_fil, 0.5)
 
+plt.plot(["1979", "1989", "1999", "2009", "2020"],[quant_1979, quant_1989, quant_1999, quant_2009, quant_2020])
+plt.xlabel("Jahr")
+plt.ylabel("Temperatur Extremwert")
+plt.savefig("1_3.png")
+plt.show()
+# 1.4 Mitelwerte der einzenlen Jahre
 
-extreme_values = temperature_data[(temperature_data < q1 - outlier_threshold) | (temperature_data > q3 + outlier_threshold)]
+years = []
+temps = []
 
+for i in range(2011, 2020 + 1):
+    years.append(str(i))
+    temp = mean_temp[year == i]
+    temp_fil = temp[~np.isnan(temp)]
+    temp_fil_mean = np.mean(temp_fil)
+    temps.append(temp_fil_mean)
 
+plt.bar(years, temps, align='center')
+plt.xlabel("Jahr")
+plt.xticks([0,1,2,3,4,5,6,7,8,9], ["2011", "2012", "2013", "2014", "2015", "2016", "2017","2018", "2019", "2020"])
+plt.ylabel("Temperatur")
+#plt.yticks("Temperatur Mittelwert")
+plt.savefig("1_4.png")
+plt.show()
 
-plt.figure()
-plt.boxplot(temperature_data)
-plt.title(f"Temperature Distribution for {specific_year} with Extreme Values Highlighted")
-plt.ylabel("Temperature (°C)")
+# 1.5 Weitere Darstellung
 
-# Task 5: Bar Chart
-last_10_years = np.unique(years)[-10:]
-average_temperatures_last_10_years = [np.mean(data[years == year][:, 2]) for year in last_10_years]
+years = []
+rads = []
 
-plt.figure()
-plt.bar(last_10_years, average_temperatures_last_10_years)
-plt.title("Average Temperatures for the Last 10 Years")
-plt.xlabel("Year")
-plt.legend()
-plt.ylabel("Average Temperature (°C)")
+for i in range(2011, 2020 + 1):
+    years.append(str(i))
+    rad = radiation[year == i]
+    rad_fil = rad[~np.isnan(rad)]
+    rad_fil_mean = np.mean(rad_fil)
+    rads.append(rad_fil_mean)
+
+plt.bar(years, rads, align='center')
+plt.xlabel("Jahr")
+plt.xticks([0,1,2,3,4,5,6,7,8,9], ["2011", "2012", "2013", "2014", "2015", "2016", "2017","2018", "2019", "2020"])
+plt.ylabel("Globale Radioaktivität Mittelwert")
+plt.savefig("1_5.png")
 plt.show()
