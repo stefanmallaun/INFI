@@ -2,7 +2,7 @@ from math import nan
 import numpy as np
 import matplotlib.pyplot as plt
 
-d = np.genfromtxt('INFI\data\london_weather.csv', delimiter=",", skip_header=1 )
+d = np.genfromtxt('data\london_weather.csv', delimiter=",", skip_header=1 )
 
 dt =  d[:,0] #Datum mit folgendem Aufbau: 19790103 (3.Jänner 1979)
 # Aufteilen in Tag, Monat, Jahr
