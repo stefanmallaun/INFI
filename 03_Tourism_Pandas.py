@@ -34,48 +34,27 @@ plt.ylabel("Anzahl Nächtigungen")
 plt.show()
 
 # 3.1
-min_arr = []
-max_arr = []
-range_arr = []
-avg_arr = []
-
-for i in range(278):
-    minimum = min(df.values[i,3:])
-    maximum = max(df.values[i,3:])
-    ranges = maximum-minimum
-    average = df.values[i,3:].mean()
-    min_arr.append(minimum)
-    max_arr.append(maximum)
-    range_arr.append(ranges)
-    avg_arr.append(average)
-    
-df["minimum"] = min_arr
-df["maximum"] = max_arr
-df["range"] = range_arr
-df["avg"] = avg_arr
+df["minimum"] = df.iloc[:, 3:].min(axis=1)
+df["maximum"] = df.iloc[:, 3:].max(axis=1)
+df["range"] = df["maximum"] - df["minimum"]
+df["avg"] = df.iloc[:, 3:].mean(axis=1)
 
 # 3.1.1
-standard_range = []
-
-for i in range(len(range_arr)):
-    standard_range.append(range_arr[i]/avg_arr[i])
-    
-df["standard_range"] = standard_range
+df["standard_range"] = df["range"] / df["avg"]
 
 # 3.2
-tourists_per_year = df[df.columns[3:]].values[1:,:].sum(axis=0)
+tourists_per_year = df.iloc[1:, 3:].sum(axis=0)
 print("Touristen pro Jahr: ")
 print(tourists_per_year)
 print("---------------------------------")
-tourists_overall = np.sum(tourists_per_year)
+tourists_overall = tourists_per_year.sum()
 print("Touristen gesamt: ")
 print(tourists_overall)
 print("---------------------------------")
+
 all_districts = ["I", "IM", "IL", "KB", "KU", "LA", "LZ", "RE", "SZ"]
-tourists_per_disctricts = []
-for i in range(len(all_districts)):
-    tourists_per_disctricts.append(df[df.Bezirk == all_districts[i]].values[:,3:].sum())
-print(tourists_per_disctricts)
+tourists_per_districts = df[df["Bezirk"].isin(all_districts)].groupby("Bezirk").sum()["x2012":]
+print(tourists_per_districts)
 
 # 4
 
