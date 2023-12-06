@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 from tabulate import tabulate
 import seaborn as sns
 
-df = pd.read_excel('data\Zeitreihe-Winter-2022092012.xlsx', skiprows=2)
+df = pd.read_excel('INFI\data\Zeitreihe-Winter-2022092012.xlsx', skiprows=2)
 
 base = ['Bezirk','Gemnr','Gemeinde']
 years = df.columns[3:].astype(str)
@@ -80,7 +80,7 @@ sns.boxenplot(x = df.columns[3:26], y = df.values[2,3:26], palette="terrain")
 plt.show()
 
 # 5
-df_2 = pd.read_excel("data/bev_meld.xlsx")
+df_2 = pd.read_excel("INFI\\data\\bev_meld.xlsx")
 
 data = pd.merge(df, df_2, how="inner", on="Gemnr")
 data = data.drop(columns="Gemnr")
