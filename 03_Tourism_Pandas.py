@@ -3,7 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from tabulate import tabulate
 import seaborn as sns
-
+#Mallaun
 df = pd.read_excel('INFI\data\Zeitreihe-Winter-2022092012.xlsx', skiprows=2)
 
 base = ['Bezirk','Gemnr','Gemeinde']

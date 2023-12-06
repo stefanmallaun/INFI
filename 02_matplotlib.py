@@ -1,7 +1,7 @@
 from math import nan
 import numpy as np
 import matplotlib.pyplot as plt
-
+#Mallaun
 d = np.genfromtxt('data\london_weather.csv', delimiter=",", skip_header=1 )
 
 dt =  d[:,0] #Datum mit folgendem Aufbau: 19790103 (3.Jänner 1979)

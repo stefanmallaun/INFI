@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 from matplotlib import pyplot as plt
-
+#Mallaun
 df = pd.read_excel("INFI\\data\\bev_meld.xlsx")
 
 # 2.1
