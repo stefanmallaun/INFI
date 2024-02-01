@@ -132,11 +132,9 @@ for i in range(0,10):
     
 sns.boxplot(x = lowest_indexes, y = lowest_ten[:10], data=data)
 
-#plt.savefig("img/5_c_1.png")
 plt.show()
 
 sns.boxplot(x = highest_indexes, y = highest_ten[:10], data=data)
-#plt.savefig("img/5_c_2.png")
 plt.show()
 
 # 5 d

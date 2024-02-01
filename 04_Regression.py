@@ -44,7 +44,7 @@ plt.title("Prognose Wörgl 2030 - 2100")
 plt.show()
 
 # zu 5 Erkenntnisse:
-# Als Wachstum wird hier der Mittelwert des Bevölkerungswachstums von Angerberg pro Jahr verwendet
+# Als Wachstum wird hier der Mittelwert des Bevölkerungswachstums von Wörgl pro Jahr verwendet
 # Das Diagramm stellt also nicht das genaue Wachstum der Bevölkerungszahl dar, zeigt aber, dass die Bevölkerung, basierend auf dem bisherigen Trend weiterwachsen wird.
 
 
@@ -76,5 +76,5 @@ plt.legend()
 plt.show()
 
 # zu 5 Erkenntnisse:
-# Hier ist hut zu sehen, dass die Regressionsgerade nicht weit von den tatsächlichen Werten abweicht, was besonders bei Kufstein der Fall ist.
+# Hier ist gut zu sehen, dass die Regressionsgerade nicht weit von den tatsächlichen Werten abweicht, was besonders bei Kufstein der Fall ist.
 # Bei Innsbruck Land weicht die Regressionsgerade etwas weiter von den gemessenen Werten ab, ist aber trotzdem relativ genau.
